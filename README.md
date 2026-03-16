@@ -1,3 +1,4 @@
+[![CI](https://github.com/jgalloway42/pwhl-client/actions/workflows/ci.yml/badge.svg)](https://github.com/jgalloway42/pwhl-client/actions/workflows/ci.yml)
 # pwhl-client
 
 Fetch PWHL game schedules from the HockeyTech API. A Python library and CLI tool for developers who want structured, validated schedule data from the Professional Women's Hockey League without dealing with raw API responses.
