@@ -23,20 +23,20 @@ UTC = timezone.utc
 # ---------------------------------------------------------------------------
 
 
-def _make_item(
-    game_date_iso: str, game_id: str = "1", status: str = "Pre-Game"
-) -> dict:
+def _make_item(game_date_iso: str, game_id: str = "1", status: str = "1") -> dict:
     return {
-        "game_id": game_id,
+        "ID": game_id,
         "GameStatus": status,
         "GameDateISO8601": game_date_iso,
-        "HomeTeam": {"ID": "1", "Name": "Boston Fleet"},
-        "VisitingTeam": {"ID": "2", "Name": "Minnesota Frost"},
+        "HomeID": "1",
+        "HomeLongName": "Boston Fleet",
+        "VisitorID": "2",
+        "VisitorLongName": "Minnesota Frost",
         "venue_name": "Tsongas Center",
-        "venue_city": "Lowell",
-        "HomeGoalCount": "",
-        "VisitingGoalCount": "",
-        "tickets_url": "https://example.com",
+        "venue_location": "Lowell, MA",
+        "HomeGoals": "",
+        "VisitorGoals": "",
+        "TicketUrl": "https://example.com",
     }
 
 

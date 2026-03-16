@@ -45,7 +45,7 @@ def test_parse_scorebar_missing_scorebar_key(missing_sitekit_payload):
 
 def test_parse_scorebar_skips_bad_items(sample_scorebar_payload):
     # Corrupt the second item so _item_to_game raises
-    sample_scorebar_payload["SiteKit"]["Scorebar"][1].pop("HomeTeam")
+    sample_scorebar_payload["SiteKit"]["Scorebar"][1].pop("HomeLongName")
     games = parse_scorebar(sample_scorebar_payload, UTC)
     assert len(games) == 2
 
@@ -76,16 +76,18 @@ def test_parse_scorebar_none_datetimes_last(sample_scorebar_payload):
 
 def _scheduled_item():
     return {
-        "game_id": "999",
-        "GameStatus": "Pre-Game",
+        "ID": "999",
+        "GameStatus": "1",
         "GameDateISO8601": "2026-03-16T23:00:00+00:00",
-        "HomeTeam": {"ID": "1", "Name": "Boston Fleet"},
-        "VisitingTeam": {"ID": "2", "Name": "Minnesota Frost"},
+        "HomeID": "1",
+        "HomeLongName": "Boston Fleet",
+        "VisitorID": "2",
+        "VisitorLongName": "Minnesota Frost",
         "venue_name": "Tsongas Center",
-        "venue_city": "Lowell",
-        "HomeGoalCount": "",
-        "VisitingGoalCount": "",
-        "tickets_url": "https://example.com/tickets",
+        "venue_location": "Lowell, MA",
+        "HomeGoals": "",
+        "VisitorGoals": "",
+        "TicketUrl": "https://example.com/tickets",
     }
 
 
@@ -93,9 +95,9 @@ def test_item_to_game_all_fields():
     from pwhl_client.parser import _item_to_game
 
     item = _scheduled_item()
-    item["HomeGoalCount"] = "2"
-    item["VisitingGoalCount"] = "1"
-    item["GameStatus"] = "Final"
+    item["HomeGoals"] = "2"
+    item["VisitorGoals"] = "1"
+    item["GameStatus"] = "4"
     game = _item_to_game(item, UTC)
 
     assert game.game_id == "999"
@@ -105,7 +107,7 @@ def test_item_to_game_all_fields():
     assert game.visiting_team == "Minnesota Frost"
     assert game.visiting_team_id == "2"
     assert game.venue == "Tsongas Center"
-    assert game.city == "Lowell"
+    assert game.city == "Lowell, MA"
     assert game.game_datetime is not None
     assert game.home_goal_count == 2
     assert game.visiting_goal_count == 1
@@ -178,15 +180,15 @@ def test_safe_int_non_numeric():
 
 
 def test_parse_status_scheduled():
-    assert _parse_status("Pre-Game") == GameStatus.SCHEDULED
+    assert _parse_status("1") == GameStatus.SCHEDULED
 
 
 def test_parse_status_in_progress():
-    assert _parse_status("In Progress") == GameStatus.IN_PROGRESS
+    assert _parse_status("2") == GameStatus.IN_PROGRESS
 
 
 def test_parse_status_completed_final():
-    assert _parse_status("Final") == GameStatus.COMPLETED
+    assert _parse_status("4") == GameStatus.COMPLETED
 
 
 def test_parse_status_completed_official():
@@ -194,11 +196,11 @@ def test_parse_status_completed_official():
 
 
 def test_parse_status_unknown():
-    assert _parse_status("Intermission") == GameStatus.UNKNOWN
+    assert _parse_status("99") == GameStatus.UNKNOWN
 
 
 def test_parse_status_unknown_emits_warning(caplog):
     with caplog.at_level(logging.WARNING, logger="pwhl_client.models"):
-        result = _parse_status("Intermission")
+        result = _parse_status("99")
     assert result == GameStatus.UNKNOWN
-    assert any("Intermission" in r.message for r in caplog.records)
+    assert any("99" in r.message for r in caplog.records)

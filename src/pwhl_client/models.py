@@ -8,6 +8,12 @@ from enum import StrEnum
 logger = logging.getLogger(__name__)
 
 _STATUS_MAP = {
+    # Numeric codes returned by the live HockeyTech API
+    "1": "scheduled",
+    "2": "in_progress",
+    "3": "in_progress",
+    "4": "completed",
+    # Legacy / spec string values kept for backwards compatibility
     "Pre-Game": "scheduled",
     "Scheduled": "scheduled",
     "In Progress": "in_progress",

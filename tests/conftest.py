@@ -3,47 +3,83 @@
 import pytest
 
 
+def _make_scorebar_item(
+    game_id: str,
+    status_code: str,
+    date_iso: str,
+    home_id: str,
+    home_name: str,
+    visitor_id: str,
+    visitor_name: str,
+    venue: str,
+    location: str,
+    home_goals: str,
+    visitor_goals: str,
+    ticket_url: str,
+) -> dict:
+    return {
+        "ID": game_id,
+        "GameStatus": status_code,
+        "GameDateISO8601": date_iso,
+        "HomeID": home_id,
+        "HomeLongName": home_name,
+        "VisitorID": visitor_id,
+        "VisitorLongName": visitor_name,
+        "venue_name": venue,
+        "venue_location": location,
+        "HomeGoals": home_goals,
+        "VisitorGoals": visitor_goals,
+        "TicketUrl": ticket_url,
+    }
+
+
 @pytest.fixture
 def sample_scorebar_payload():
     return {
         "SiteKit": {
             "Scorebar": [
-                {
-                    "game_id": "101",
-                    "GameStatus": "Pre-Game",
-                    "GameDateISO8601": "2026-03-16T23:00:00+00:00",
-                    "HomeTeam": {"ID": "1", "Name": "Boston Fleet"},
-                    "VisitingTeam": {"ID": "2", "Name": "Minnesota Frost"},
-                    "venue_name": "Tsongas Center",
-                    "venue_city": "Lowell",
-                    "HomeGoalCount": "",
-                    "VisitingGoalCount": "",
-                    "tickets_url": "https://example.com/101",
-                },
-                {
-                    "game_id": "102",
-                    "GameStatus": "In Progress",
-                    "GameDateISO8601": "2026-03-16T20:00:00+00:00",
-                    "HomeTeam": {"ID": "3", "Name": "Toronto Sceptres"},
-                    "VisitingTeam": {"ID": "4", "Name": "Ottawa Charge"},
-                    "venue_name": "Coca-Cola Coliseum",
-                    "venue_city": "Toronto",
-                    "HomeGoalCount": "2",
-                    "VisitingGoalCount": "1",
-                    "tickets_url": "https://example.com/102",
-                },
-                {
-                    "game_id": "103",
-                    "GameStatus": "Final",
-                    "GameDateISO8601": "2026-03-15T18:00:00+00:00",
-                    "HomeTeam": {"ID": "5", "Name": "Montreal Victoire"},
-                    "VisitingTeam": {"ID": "6", "Name": "New York Sirens"},
-                    "venue_name": "Place Bell",
-                    "venue_city": "Laval",
-                    "HomeGoalCount": "3",
-                    "VisitingGoalCount": "2",
-                    "tickets_url": "https://example.com/103",
-                },
+                _make_scorebar_item(
+                    "101",
+                    "1",
+                    "2026-03-16T23:00:00+00:00",
+                    "1",
+                    "Boston Fleet",
+                    "2",
+                    "Minnesota Frost",
+                    "Tsongas Center",
+                    "Lowell, MA",
+                    "",
+                    "",
+                    "https://example.com/101",
+                ),
+                _make_scorebar_item(
+                    "102",
+                    "2",
+                    "2026-03-16T20:00:00+00:00",
+                    "3",
+                    "Toronto Sceptres",
+                    "4",
+                    "Ottawa Charge",
+                    "Coca-Cola Coliseum",
+                    "Toronto, ON",
+                    "2",
+                    "1",
+                    "https://example.com/102",
+                ),
+                _make_scorebar_item(
+                    "103",
+                    "4",
+                    "2026-03-15T18:00:00+00:00",
+                    "5",
+                    "Montreal Victoire",
+                    "6",
+                    "New York Sirens",
+                    "Place Bell",
+                    "Laval, QC",
+                    "3",
+                    "2",
+                    "https://example.com/103",
+                ),
             ]
         }
     }

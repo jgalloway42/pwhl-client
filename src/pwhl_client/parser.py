@@ -37,18 +37,18 @@ def parse_scorebar(raw: dict, tz: timezone) -> list[Game]:
 def _item_to_game(item: dict, tz: timezone) -> Game:
     """Convert a single scorebar item dict to a Game. Raises on bad input."""
     return Game(
-        game_id=str(item["game_id"]),
+        game_id=str(item["ID"]),
         game_status=_parse_status(item["GameStatus"]),
-        home_team=str(item["HomeTeam"]["Name"]),
-        home_team_id=str(item["HomeTeam"]["ID"]),
-        visiting_team=str(item["VisitingTeam"]["Name"]),
-        visiting_team_id=str(item["VisitingTeam"]["ID"]),
+        home_team=str(item["HomeLongName"]),
+        home_team_id=str(item["HomeID"]),
+        visiting_team=str(item["VisitorLongName"]),
+        visiting_team_id=str(item["VisitorID"]),
         venue=str(item["venue_name"]),
-        city=str(item["venue_city"]),
+        city=str(item["venue_location"]),
         game_datetime=_parse_datetime(item["GameDateISO8601"], tz),
-        home_goal_count=_safe_int(item["HomeGoalCount"]),
-        visiting_goal_count=_safe_int(item["VisitingGoalCount"]),
-        tickets_url=str(item["tickets_url"]),
+        home_goal_count=_safe_int(item["HomeGoals"]),
+        visiting_goal_count=_safe_int(item["VisitorGoals"]),
+        tickets_url=str(item["TicketUrl"]),
     )
 
 
