@@ -48,7 +48,6 @@ def _item_to_game(item: dict, tz: timezone) -> Game:
         game_datetime=_parse_datetime(item["GameDateISO8601"], tz),
         home_goal_count=_safe_int(item["HomeGoals"]),
         visiting_goal_count=_safe_int(item["VisitorGoals"]),
-        tickets_url=str(item["TicketUrl"]),
     )
 
 

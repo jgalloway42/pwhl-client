@@ -15,7 +15,6 @@ def _make_scorebar_item(
     location: str,
     home_goals: str,
     visitor_goals: str,
-    ticket_url: str,
 ) -> dict:
     return {
         "ID": game_id,
@@ -29,7 +28,6 @@ def _make_scorebar_item(
         "venue_location": location,
         "HomeGoals": home_goals,
         "VisitorGoals": visitor_goals,
-        "TicketUrl": ticket_url,
     }
 
 
@@ -50,7 +48,6 @@ def sample_scorebar_payload():
                     "Lowell, MA",
                     "",
                     "",
-                    "https://example.com/101",
                 ),
                 _make_scorebar_item(
                     "102",
@@ -64,7 +61,6 @@ def sample_scorebar_payload():
                     "Toronto, ON",
                     "2",
                     "1",
-                    "https://example.com/102",
                 ),
                 _make_scorebar_item(
                     "103",
@@ -78,7 +74,6 @@ def sample_scorebar_payload():
                     "Laval, QC",
                     "3",
                     "2",
-                    "https://example.com/103",
                 ),
             ]
         }

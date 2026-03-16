@@ -87,7 +87,6 @@ def _scheduled_item():
         "venue_location": "Lowell, MA",
         "HomeGoals": "",
         "VisitorGoals": "",
-        "TicketUrl": "https://example.com/tickets",
     }
 
 
@@ -111,7 +110,6 @@ def test_item_to_game_all_fields():
     assert game.game_datetime is not None
     assert game.home_goal_count == 2
     assert game.visiting_goal_count == 1
-    assert game.tickets_url == "https://example.com/tickets"
 
 
 def test_item_to_game_pre_game_goals_none():

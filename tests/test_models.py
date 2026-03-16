@@ -20,7 +20,6 @@ def _make_game(**kwargs) -> Game:
         game_datetime=datetime(2026, 3, 15, 19, 0, 0, tzinfo=timezone.utc),
         home_goal_count=None,
         visiting_goal_count=None,
-        tickets_url="https://example.com/tickets",
     )
     defaults.update(kwargs)
     return Game(**defaults)

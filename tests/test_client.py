@@ -36,7 +36,6 @@ def _make_item(game_date_iso: str, game_id: str = "1", status: str = "1") -> dic
         "venue_location": "Lowell, MA",
         "HomeGoals": "",
         "VisitorGoals": "",
-        "TicketUrl": "https://example.com",
     }
 
 

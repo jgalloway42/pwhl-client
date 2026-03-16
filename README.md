@@ -102,8 +102,7 @@ export PWHL_API_KEY=your_new_key_here
       "city": "Lowell",
       "game_datetime": "2026-03-15T19:00:00-04:00",
       "home_goal_count": null,
-      "visiting_goal_count": null,
-      "tickets_url": "https://..."
+      "visiting_goal_count": null
     }
   ]
 }

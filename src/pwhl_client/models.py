@@ -51,7 +51,6 @@ class Game:
     game_datetime: datetime | None
     home_goal_count: int | None
     visiting_goal_count: int | None
-    tickets_url: str
 
     def to_dict(self) -> dict:
         return {
@@ -70,7 +69,6 @@ class Game:
             ),
             "home_goal_count": self.home_goal_count,
             "visiting_goal_count": self.visiting_goal_count,
-            "tickets_url": self.tickets_url,
         }
 
 
