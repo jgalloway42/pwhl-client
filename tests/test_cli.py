@@ -25,9 +25,11 @@ def _run_main(args: list[str], mocker=None):
     stdout_capture = StringIO()
     stderr_capture = StringIO()
 
-    with patch("sys.argv", ["pwhl-client"] + args), patch(
-        "sys.stdout", stdout_capture
-    ), patch("sys.stderr", stderr_capture):
+    with (
+        patch("sys.argv", ["pwhl-client"] + args),
+        patch("sys.stdout", stdout_capture),
+        patch("sys.stderr", stderr_capture),
+    ):
         try:
             main()
             exit_code = 0

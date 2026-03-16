@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pwhl-client"
+version = "0.1.0"
+description = "Fetch PWHL game schedules from the HockeyTech API"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+  { name = "Josh Galloway" }
+]
+keywords = ["pwhl", "hockey", "sports", "schedule", "hockeytech"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Internet :: WWW/HTTP",
+]
+dependencies = ["requests>=2.28"]
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "pytest-mock", "pylint"]
+
+[project.urls]
+Homepage = "https://github.com/jgalloway42/pwhl-client"
+Repository = "https://github.com/jgalloway42/pwhl-client"
+Issues = "https://github.com/jgalloway42/pwhl-client/issues"
+
+[project.scripts]
+pwhl-client = "pwhl_client.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pwhl_client"]
