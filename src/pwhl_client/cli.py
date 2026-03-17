@@ -61,3 +61,7 @@ def main() -> None:
         sys.exit(2)
 
     print(json.dumps(result.to_dict(), indent=2))
+
+
+if __name__ == "__main__":
+    main()

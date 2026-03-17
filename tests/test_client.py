@@ -234,7 +234,7 @@ def test_fetch_days_ahead_calculation(mocker):
     result = get_schedule(start=future, end=future)
     call_kwargs = requests.Session.get.call_args
     assert "numberofdaysahead" in str(call_kwargs)
-    assert "7" in str(call_kwargs)
+    assert "8" in str(call_kwargs)  # 7 days ahead + 1 to capture full day
 
 
 def test_fetch_tz_affects_today_calculation(mocker):

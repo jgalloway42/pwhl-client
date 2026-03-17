@@ -54,6 +54,8 @@ def get_schedule(
     today = datetime.now(tz).date()
     days_back = max(0, (today - start).days)
     days_ahead = max(0, (end - today).days)
+    if end >= today:
+        days_ahead += 1
 
     if days_back > MAX_DAYS_RANGE or days_ahead > MAX_DAYS_RANGE:
         raise PWHLAPIError(_OUT_OF_RANGE_MSG)

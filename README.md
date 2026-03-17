@@ -136,6 +136,28 @@ except PWHLAPIError as e:
 
 ---
 
+## Known bugs and fixes
+
+### `python -m pwhl_client.cli` silently returned no output (v0.1.0)
+
+**Symptom:** Running `python -m pwhl_client.cli <date>` exited with code 0 but printed nothing, even when games existed.
+
+**Root cause:** `cli.py` defined `main()` but had no `if __name__ == "__main__": main()` guard, so the module ran as a script with no entry point. Additionally, `__main__.py` was absent, so `python -m pwhl_client` was also broken.
+
+**Fix:** Added `if __name__ == "__main__": main()` to `cli.py` and created `__main__.py` to delegate to `cli.main()`.
+
+---
+
+### Today's games missing when `end == today` (v0.1.0)
+
+**Symptom:** Calling `get_schedule()` or `get_schedule(start=date.today())` returned no games even when games were scheduled or in progress for that day.
+
+**Root cause:** The HockeyTech `scorebar` endpoint uses `numberofdaysahead` to control how far forward it looks. When `end == today`, `numberofdaysahead` was computed as `0`, which caused the API to exclude games scheduled later the same day.
+
+**Fix:** When `end >= today`, `numberofdaysahead` is incremented by 1 to ensure the full current day is included. Results are still filtered to the requested date range after fetching.
+
+---
+
 ## Data source
 
 Game data is fetched from the HockeyTech/LeagueStat API, the undocumented backend that powers [thepwhl.com](https://www.thepwhl.com). The API has been reverse-engineered and documented by the community — see the [PWHL Data Reference](https://github.com/IsabelleLefebvre97/PWHL-Data-Reference) repository for full details on available endpoints and parameters.
