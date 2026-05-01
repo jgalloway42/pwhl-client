@@ -1,7 +1,7 @@
 """Tests for parser.py."""
 
 import logging
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import pytest
 
@@ -108,6 +108,7 @@ def test_item_to_game_all_fields():
     assert game.venue == "Tsongas Center"
     assert game.city == "Lowell, MA"
     assert game.game_datetime is not None
+    assert game.game_date == date(2026, 3, 16)
     assert game.home_goal_count == 2
     assert game.visiting_goal_count == 1
 

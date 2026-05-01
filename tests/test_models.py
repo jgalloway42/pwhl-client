@@ -1,6 +1,6 @@
 """Tests for models.py."""
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import pytest
 
@@ -18,6 +18,7 @@ def _make_game(**kwargs) -> Game:
         venue="Tsongas Center",
         city="Lowell",
         game_datetime=datetime(2026, 3, 15, 19, 0, 0, tzinfo=timezone.utc),
+        game_date=date(2026, 3, 15),
         home_goal_count=None,
         visiting_goal_count=None,
     )
@@ -46,6 +47,16 @@ def test_game_to_dict_datetime_is_string():
 def test_game_to_dict_none_datetime():
     game = _make_game(game_datetime=None)
     assert game.to_dict()["game_datetime"] is None
+
+
+def test_game_to_dict_game_date_is_iso_string():
+    game = _make_game()
+    assert game.to_dict()["game_date"] == "2026-03-15"
+
+
+def test_game_to_dict_none_game_date():
+    game = _make_game(game_date=None)
+    assert game.to_dict()["game_date"] is None
 
 
 def test_game_to_dict_game_status_is_string():

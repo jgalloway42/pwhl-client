@@ -2,7 +2,7 @@
 
 import logging
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from enum import StrEnum
 
 logger = logging.getLogger(__name__)
@@ -49,6 +49,7 @@ class Game:
     venue: str
     city: str
     game_datetime: datetime | None
+    game_date: date | None
     home_goal_count: int | None
     visiting_goal_count: int | None
 
@@ -66,6 +67,9 @@ class Game:
                 self.game_datetime.isoformat()
                 if self.game_datetime is not None
                 else None
+            ),
+            "game_date": (
+                self.game_date.isoformat() if self.game_date is not None else None
             ),
             "home_goal_count": self.home_goal_count,
             "visiting_goal_count": self.visiting_goal_count,

@@ -102,6 +102,7 @@ export PWHL_API_KEY=your_new_key_here
       "venue": "Tsongas Center",
       "city": "Lowell",
       "game_datetime": "2026-03-15T19:00:00-04:00",
+      "game_date": "2026-03-15",
       "home_goal_count": null,
       "visiting_goal_count": null
     }
@@ -111,6 +112,7 @@ export PWHL_API_KEY=your_new_key_here
 
 `game_status` is one of `"scheduled"`, `"in_progress"`, `"completed"`, or `"unknown"`.
 `game_datetime` is always timezone-aware and stored in the timezone passed to `get_schedule()`.
+`game_date` is the calendar date the game is played, taken directly from the API's local game date — independent of timezone conversion.
 `home_goal_count` and `visiting_goal_count` are `null` for pre-game entries.
 
 ---
@@ -155,6 +157,14 @@ except PWHLAPIError as e:
 **Root cause:** The HockeyTech `scorebar` endpoint uses `numberofdaysahead` to control how far forward it looks. When `end == today`, `numberofdaysahead` was computed as `0`, which caused the API to exclude games scheduled later the same day.
 
 **Fix:** When `end >= today`, `numberofdaysahead` is incremented by 1 to ensure the full current day is included. Results are still filtered to the requested date range after fetching.
+
+### Playoff games silently dropped for late-evening starts (v0.1.1)
+
+**Symptom:** Calling `get_schedule(start=date(2026, 4, 30))` returned 0 games despite a completed playoff game on that date (Ottawa @ Boston, Tsongas Center).
+
+**Root cause:** The date filter compared `game_datetime.date()` — the game's start time converted to UTC — against the requested date. A game starting at 8 PM EDT is midnight UTC, so its UTC date is the *next* calendar day. The filter for April 30 therefore silently excluded it. The same issue affects any game starting at or after 8 PM Eastern time when queried in the default UTC timezone.
+
+**Fix (v0.1.2):** Added a `game_date` field to `Game` that stores the calendar date extracted from the API's `GameDateISO8601` string before any timezone conversion (i.e., the date the game is actually played at the arena). The filter in `get_schedule()` now uses `game_date` instead of `game_datetime.date()`. The `game_date` field is also included in `to_dict()` output.
 
 ---
 

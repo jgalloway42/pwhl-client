@@ -1,7 +1,7 @@
 """Parse raw HockeyTech API responses into Game objects."""
 
 import logging
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Any
 
 from .exceptions import PWHLParseError
@@ -36,6 +36,7 @@ def parse_scorebar(raw: dict, tz: timezone) -> list[Game]:
 
 def _item_to_game(item: dict, tz: timezone) -> Game:
     """Convert a single scorebar item dict to a Game. Raises on bad input."""
+    raw_iso = item["GameDateISO8601"]
     return Game(
         game_id=str(item["ID"]),
         game_status=_parse_status(item["GameStatus"]),
@@ -45,10 +46,21 @@ def _item_to_game(item: dict, tz: timezone) -> Game:
         visiting_team_id=str(item["VisitorID"]),
         venue=str(item["venue_name"]),
         city=str(item["venue_location"]),
-        game_datetime=_parse_datetime(item["GameDateISO8601"], tz),
+        game_datetime=_parse_datetime(raw_iso, tz),
+        game_date=_parse_game_date(raw_iso),
         home_goal_count=_safe_int(item["HomeGoals"]),
         visiting_goal_count=_safe_int(item["VisitorGoals"]),
     )
+
+
+def _parse_game_date(value: str) -> date | None:
+    """Extract the calendar date from an ISO-8601 string without timezone conversion."""
+    if not value:
+        return None
+    try:
+        return date.fromisoformat(value[:10])
+    except (ValueError, TypeError):
+        return None
 
 
 def _parse_datetime(value: str, tz: timezone) -> datetime | None:

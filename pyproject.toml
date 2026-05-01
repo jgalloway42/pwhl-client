@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pwhl-client"
-version = "0.1.1"
+version = "0.1.2"
 description = "Fetch PWHL game schedules from the HockeyTech API"
 readme = "README.md"
 requires-python = ">=3.12"

@@ -212,6 +212,15 @@ def test_fetch_games_with_none_datetime_excluded(mocker):
     assert result.games[0].game_id == "good"
 
 
+def test_fetch_late_evening_et_game_not_lost_to_utc(mocker):
+    # 8 PM EDT = 2026-05-01T00:00:00Z — game_date must stay 2026-04-30
+    target = date(2026, 4, 30)
+    item = _make_item("2026-04-30T20:00:00-04:00")
+    _mock_response(mocker, _payload(item))
+    result = get_schedule(start=target, end=target)
+    assert len(result.games) == 1
+
+
 # ---------------------------------------------------------------------------
 # days_back / days_ahead calculation
 # ---------------------------------------------------------------------------
