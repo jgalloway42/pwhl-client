@@ -86,9 +86,7 @@ def get_schedule(
     games = parse_scorebar(raw, tz)
 
     filtered = [
-        g
-        for g in games
-        if g.game_date is not None and start <= g.game_date <= end
+        g for g in games if g.game_date is not None and start <= g.game_date <= end
     ]
 
     if not filtered and (
